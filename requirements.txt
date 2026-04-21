@@ -11,4 +11,3 @@ requests
 supabase
 langchain-text-splitters
 pypdf
-sentence-transformers
