@@ -10,4 +10,4 @@ beautifulsoup4
 requests
 supabase
 langchain-text-splitters
-pypdfcc
+pypdf
