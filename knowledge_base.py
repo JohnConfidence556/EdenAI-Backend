@@ -1,5 +1,6 @@
 from langchain_community.document_loaders import DirectoryLoader, TextLoader, PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 import os
@@ -8,6 +9,10 @@ import os
 
 embedding_model = HuggingFaceEmbeddings(model_name= "all-MiniLM-L6-v2")
 
+embedding_model = HuggingFaceInferenceAPIEmbeddings(
+    api_key=os.getenv("HUGGINGFACEHUB_API_TOKEN"), 
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
 
 # Loading document
 
