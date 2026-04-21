@@ -1,18 +1,23 @@
 from langchain_community.document_loaders import DirectoryLoader, TextLoader, PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpointEmbeddings
 from langchain_community.vectorstores import FAISS
+from dotenv import load_dotenv
 import os
 
 # creating the embeddings model
+load_dotenv()
 
-embedding_model = HuggingFaceEmbeddings(model_name= "all-MiniLM-L6-v2")
 
-embedding_model = HuggingFaceInferenceAPIEmbeddings(
-    api_key=os.getenv("HUGGINGFACEHUB_API_TOKEN"), 
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
+embedding_model = HuggingFaceEndpointEmbeddings(
+    model="sentence-transformers/all-MiniLM-L6-v2",
+    huggingfacehub_api_token=os.getenv("HUGGINGFACEHUB_API_TOKEN"),
+    # This is the magic line! It tells the API to wait if the model is loading
+    task="feature-extraction"
 )
+
+
 
 # Loading document
 
@@ -117,9 +122,10 @@ def search_knowledge_base(retriever, query: str):
 
 
 
-"""
+
 if __name__ == "__main__":
-    # This is where the magic happens
-    build_knowledge_base()
-"""
-    
+    print("🚀 Starting build process...")
+    # This calls your function
+    retriever = build_knowledge_base() 
+    if retriever:
+        print("📁 Look in your folder now. You should see 'vector_store'!")
